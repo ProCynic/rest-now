@@ -1,8 +1,9 @@
 {
   "name": "rest-now",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Geoffrey Parker <grp@gparker.co>",
   "description": "Start it running, dump some HTML/Bootstrap in the public dir, and you've got a webapp.",
+  "preferGlobal": true,
   "bugs": {
     "url": "https://github.com/ProCynic/rest-now/issues"
   },
