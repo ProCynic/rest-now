@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "author": "gparker <grp@gparker.co>",
   "description": "Start it running, dump some HTML/Bootstrap in the public dir, and you've got a webapp.",
+  "bin": {
+    "api-start": "node ./bin/cluster.js"
+  },
   "scripts": {
-    "start": "node ./bin/cluster.js"
+    "start": "./bin/api-start"
   },
   "main": "./bin/server.js",
   "repository": {
@@ -13,7 +16,7 @@
   },
   "keywords": [
     "API",
-    "Quickstart",
+    "quickstart",
     "Mongo",
     "Restify",
     "REST"
