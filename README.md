@@ -1,5 +1,5 @@
-API-In-A-Box
-============
+REST Now
+========
 
 Start it running, dump some HTML/js in the public dir, and you've got a webapp.
 
