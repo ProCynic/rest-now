@@ -33,5 +33,9 @@
   },
   "engines": {
     "node": ">=0.8.8"
+  },
+  "licenses": {
+    "type": "MIT",
+    "url": "https://github.com/procynic/rest-now/raw/master/LICENSE"
   }
 }
