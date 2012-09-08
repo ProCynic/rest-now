@@ -1,13 +1,13 @@
 {
-  "name": "API-In-A-Box",
+  "name": "rest-now",
   "version": "0.0.1",
   "author": "gparker <grp@gparker.co>",
   "description": "Start it running, dump some HTML/Bootstrap in the public dir, and you've got a webapp.",
   "bin": {
-    "api-start": "node ./bin/cluster.js"
+    "rest-now": "./bin/rest-now"
   },
   "scripts": {
-    "start": "./bin/api-start"
+    "start": "node ./bin/cluster.js"
   },
   "main": "./bin/server.js",
   "repository": {
