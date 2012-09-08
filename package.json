@@ -1,0 +1,29 @@
+{
+  "name": "API-In-A-Box",
+  "version": "0.0.1",
+  "author": "gparker <grp@gparker.co>",
+  "description": "Start it running, dump some HTML/Bootstrap in the public dir, and you've got a webapp.",
+  "scripts": {
+    "start": "node ./bin/cluster.js"
+  },
+  "main": "./bin/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ProCynic/API-In-A-Box"
+  },
+  "keywords": [
+    "API",
+    "Quickstart",
+    "Mongo",
+    "Restify",
+    "REST"
+  ],
+  "dependencies": {
+    "mongodb": "1.1.x",
+    "restify": "1.4.x",
+    "node-static": "0.6.x"
+  },
+  "engines": {
+    "node": ">=0.8.8"
+  }
+}
