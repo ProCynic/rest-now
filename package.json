@@ -1,10 +1,13 @@
 {
   "name": "rest-now",
   "version": "0.0.1",
-  "author": "gparker <grp@gparker.co>",
+  "author": "Geoffrey Parker <grp@gparker.co>",
   "description": "Start it running, dump some HTML/Bootstrap in the public dir, and you've got a webapp.",
+  "bugs": {
+    "url": "https://github.com/ProCynic/rest-now/issues"
+  },
   "bin": {
-    "rest-now": "./bin/rest-now"
+    "rest-now": "./bin/cluster.js"
   },
   "scripts": {
     "start": "node ./bin/cluster.js"

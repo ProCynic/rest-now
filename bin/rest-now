@@ -1,2 +1,3 @@
-#!/bin/bash
-node ./cluster.js
+#!/usr/bin/env node
+
+require('cluster.js');
