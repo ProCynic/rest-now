@@ -2,9 +2,10 @@
 restify = require 'restify'
 node_static = require 'node-static'
 mongo = require 'mongodb'
+fs = require 'fs'
 
 # static file server
-static_server = new node_static.Server './public'
+static_server = null
 
 
 # mongo setup
@@ -139,8 +140,18 @@ server.del '/:collection', removeAll, notAPI
 
 server.del '/:collection/:pk', remove, notAPI
 
+root = null
+
+try
+  fs.lstatSync './public'
+  root = './public'
+catch err
+  root = './'
+
 # Sever start function
-exports.start = (port) ->
+exports.start = (port, path) ->
+  root = path ? root
+  static_server = new node_static.Server root
   server.listen port
 
 return exports
