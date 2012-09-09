@@ -10,7 +10,7 @@ static_server = null
 
 # mongo setup
 
-newConnection  = (options) -> new mongo.Db dbname, (new mongo.Server '127.0.0.1', 27017, {auto_reconnect: true}), options
+newConnection  = (options) -> new mongo.Db dbname, (new mongo.Server dbhost, dbport, {auto_reconnect: true}), options
 
 # strict database decorator
 strict = (func) -> (req, res, next) ->
@@ -166,14 +166,20 @@ catch err
   root = './'
 
 dbname = 'test'
+dbport = 27017
+dbhost = '127.0.0.1'
 
 pageSize = 20
 
 # Sever start function
-exports.start = (port, path, db) ->
-  root = path ? root
-  dbname = db ? dbname
+exports.start = (port, path, db, dbserver) ->
+  root ?= port
+  dbname ?= db
+  [dbhost, dbport] = dbserver.split ':' if dbserver?
+  dbport = parseInt dbport
   static_server = new node_static.Server root
-  server.listen port, () -> console.log 'Server listening on port ' + port
+  server.listen port, () ->
+    console.log 'Server listening on port ' + port
+    console.log 'db  host: ' + dbhost + ' port: ' + dbport + ' name: ' + dbname
 
 return exports
