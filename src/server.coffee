@@ -45,13 +45,14 @@ errors =
   docNotFound: (coll, pk) -> return '/' + coll + '/' + pk + ' could not be found'
 
 
-find = (db, coll, query, res) ->
+find = (db, coll, query, res, page) ->
   db.collection coll, (err, c) ->
     if err?
       db.close()
       return res.send 404, errors.collectionNotFound coll
     result = []
     cursor = c.find query
+    cursor.skip((page-1) * pageSize).limit pageSize
     # memory inefficient version for testing
     cursor.toArray (err, docs) ->
       res.json 200, docs.map (e, i, arr) -> '/' + coll + '/' +  e._id.toHexString()
@@ -68,11 +69,14 @@ collections = api strict (req, res, next, db) ->
 
 collection = api strict (req, res, next, db) ->
   query = req.query
+  page = query.page ? 1
+  console.log 'page ' + page
   delete query.page
-  find db, req.params.collection, query, res
+  find db, req.params.collection, query, res, page
 
 query = api strict (req, res, next, db) ->
-  find db, req.params.collection, req.body, res
+  page = query.page ? 1
+  find db, req.params.collection, req.body, res, page
 
 document = api strict (req, res, next, db) ->
   db.collection req.params.collection, (err, c) ->
@@ -162,6 +166,8 @@ catch err
   root = './'
 
 dbname = 'test'
+
+pageSize = 20
 
 # Sever start function
 exports.start = (port, path, db) ->
