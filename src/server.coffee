@@ -177,17 +177,16 @@ dbname = 'test'
 dbport = 27017
 dbhost = '127.0.0.1'
 
-pageSize = 20
-
 # Sever start function
 exports.start = (port, path, db, dbserver) ->
-  root ?= port
+  p = port ? 8000
+  root ?= path
   dbname ?= db
   [dbhost, dbport] = dbserver.split ':' if dbserver?
   dbport = parseInt dbport
   static_server = new node_static.Server root
-  server.listen port, () ->
-    console.log 'Server listening on port ' + port
+  server.listen p, () ->
+    console.log 'Server listening on port ' + p
     console.log 'db  host: ' + dbhost + ' port: ' + dbport + ' name: ' + dbname
 
 return exports
