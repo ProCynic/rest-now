@@ -45,14 +45,15 @@ errors =
   docNotFound: (coll, pk) -> return '/' + coll + '/' + pk + ' could not be found'
 
 
-find = (db, coll, query, res, page) ->
+find = (db, coll, query, res, limit, skip) ->
   db.collection coll, (err, c) ->
     if err?
       db.close()
       return res.send 404, errors.collectionNotFound coll
     result = []
     cursor = c.find query
-    cursor.skip((page-1) * pageSize).limit pageSize
+    cursor.skip skip if skip?
+    cursor.limit limit if limit?
     # memory inefficient version for testing
     cursor.toArray (err, docs) ->
       res.json 200, docs.map (e, i, arr) -> '/' + coll + '/' +  e._id.toHexString()
@@ -68,15 +69,14 @@ collections = api strict (req, res, next, db) ->
     db.close()
 
 collection = api strict (req, res, next, db) ->
-  query = req.query
-  page = query.page ? 1
-  console.log 'page ' + page
-  delete query.page
-  find db, req.params.collection, query, res, page
+  limit = parseInt req.query.limit
+  skip = parseInt req.query.skip
+  delete req.query.limit
+  delete req.query.skip
+  find db, req.params.collection, req.query, res, limit, skip
 
 query = api strict (req, res, next, db) ->
-  page = query.page ? 1
-  find db, req.params.collection, req.body, res, page
+  find db, req.params.collection, req.body, res, parseInt(req.query.limit), parseInt req.query.skip
 
 document = api strict (req, res, next, db) ->
   db.collection req.params.collection, (err, c) ->
