@@ -9,18 +9,19 @@ static_server = null
 
 
 # mongo setup
+
 newConnection  = (options) -> new mongo.Db dbname, (new mongo.Server '127.0.0.1', 27017, {auto_reconnect: true}), options
 
 # strict database decorator
 strict = (func) -> (req, res, next) ->
   newConnection({strict:true}).open (err, db) ->
-    return res.send 500, 'could not connect to database' if err?
+    return res.send 500, 'could not connect to database ' + dbname if err?
     func req, res, next, db
 
 # non strict database decorator
 nostrict = (func) -> (req, res, next) ->
   newConnection({}).open (err, db) ->
-    return res.send 500, 'could not connect to database' if err?
+    return res.send 500, 'could not connect to database ' + dbname if err?
     func req, res, next, db
 
 
@@ -43,25 +44,35 @@ errors =
   collectionNotFound: (coll) -> return '/' + coll + ' could not be found'
   docNotFound: (coll, pk) -> return '/' + coll + '/' + pk + ' could not be found'
 
+
+find = (db, coll, query, res) ->
+  db.collection coll, (err, c) ->
+    if err?
+      db.close()
+      return res.send 404, errors.collectionNotFound coll
+    result = []
+    cursor = c.find query
+    # memory inefficient version for testing
+    cursor.toArray (err, docs) ->
+      res.json 200, docs.map (e, i, arr) -> '/' + coll + '/' +  e._id.toHexString()
+    db.close()
+
 # controllers
 
 # GET
+
 collections = api strict (req, res, next, db) ->
   db.collectionNames (err, names) ->
     res.json 200, names.filter((e) -> return e.name.split('.')[1] != 'system').map (e, i, arr) -> '/' + e.name.split('.')[1]
     db.close()
 
 collection = api strict (req, res, next, db) ->
-  db.collection req.params.collection, (err, c) ->
-    if err?
-      db.close()
-      return res.send 404, errors.collectionNotFound req.params.collection
-    result = []
-    cursor = c.find({})
-    # memory inefficient version for testing
-    cursor.toArray (err, docs) ->
-      res.json 200, docs.map (e, i, arr) -> '/' + req.params.collection + '/' +  e._id.toHexString()
-    db.close()
+  query = req.query
+  delete query.page
+  find db, req.params.collection, query, res
+
+query = api strict (req, res, next, db) ->
+  find db, req.params.collection, req.body, res
 
 document = api strict (req, res, next, db) ->
   db.collection req.params.collection, (err, c) ->
@@ -128,6 +139,8 @@ notAPI = (req, res, next) ->
 # Routes
 server.get '/:collection', collection, files
 
+server.post '/:collection/query', query, files
+
 server.get '/:collection/:pk', document, files
 
 server.get /^\/.*/, collections, files # catch all
@@ -155,6 +168,6 @@ exports.start = (port, path, db) ->
   root = path ? root
   dbname = db ? dbname
   static_server = new node_static.Server root
-  server.listen port
+  server.listen port, () -> console.log 'Server listening on port ' + port
 
 return exports
