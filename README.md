@@ -24,7 +24,7 @@ Usage
 [path] defaults to ./public if the folder exists, and ./ otherwise.
 
 options:
-  -p                Port to use [8000]
-  -d                Mongo Database name [-d 'test']
-  -s                Mongo server [-s 127.0.0.1:27017]
-  -h --help         Display this message and exit
+    -p                Port to use [8000]
+    -d                Mongo Database name [-d 'test']
+    -s                Mongo server [-s 127.0.0.1:27017]
+    -h --help         Display this message and exit
