@@ -8,10 +8,10 @@
     "url": "https://github.com/ProCynic/rest-now/issues"
   },
   "bin": {
-    "rest-now": "./bin/cluster.js"
+    "rest-now": "./bin/cli.js"
   },
   "scripts": {
-    "start": "node ./bin/cluster.js"
+    "start": "node ./bin/cli.js"
   },
   "main": "./bin/server.js",
   "repository": {
