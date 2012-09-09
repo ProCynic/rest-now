@@ -9,16 +9,19 @@ if argv.h? or argv.help?
 
     options:
       -p                Port to use [8000]
+      -d                Mongo Database name [-d 'test']
       -h --help         Display this message and exit
     """
   process.exit()
 
 port = argv.p ? 8000
 root = argv._[0]
+db = argv.d ? 'test'
+
 if cluster.isMaster
   cluster.fork() for i in [1..numcpus]
   cluster.on 'online', (worker) -> console.log  'worker ' + worker.process.pid + ' started'
   cluster.on 'exit', (worker, code, signal) ->
     console.log 'worker ' + worker.process.pid + ' died'
     cluster.fork()
-else server.start port, root
+else server.start port, root, db

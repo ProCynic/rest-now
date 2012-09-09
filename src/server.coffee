@@ -9,7 +9,7 @@ static_server = null
 
 
 # mongo setup
-newConnection  = (options) -> new mongo.Db 'test', (new mongo.Server '127.0.0.1', 27017, {auto_reconnect: true}), options
+newConnection  = (options) -> new mongo.Db dbname, (new mongo.Server '127.0.0.1', 27017, {auto_reconnect: true}), options
 
 # strict database decorator
 strict = (func) -> (req, res, next) ->
@@ -148,9 +148,12 @@ try
 catch err
   root = './'
 
+dbname = 'test'
+
 # Sever start function
-exports.start = (port, path) ->
+exports.start = (port, path, db) ->
   root = path ? root
+  dbname = db ? dbname
   static_server = new node_static.Server root
   server.listen port
 
