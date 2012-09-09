@@ -10,11 +10,7 @@ Requests that *explicitly* contain `application/json` in the `Accept` header are
 Installing Globally
 ===================
 
-This package is _NOT_ in NPM currently.  Until then:
-
-1. Download Source
-2. `make`
-3. `npm install -g`
+`npm install -g rest-now`
 
 Usage
 -----
