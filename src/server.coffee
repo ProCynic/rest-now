@@ -108,8 +108,16 @@ create = api nostrict (req, res, next, db) ->
 
 #PUT
 update = api nostrict (req, res, next, db) ->
-  db.close()
-  #TODO
+  db.collection req.params.collection, (err, c) ->
+    if err?
+      db.close()
+      return res.send err
+    update = if req.query.overwrite then req.body else {$set: req.body}
+    id = mongo.BSONPure.ObjectID.createFromHexString req.params.pk
+    c.update {_id: id}, update, {safe:true}, (err, count) ->
+      db.close()
+      return res.send err if err?
+      document req, res, next
 
 #DELETE
 remove = api nostrict (req, res, next, db) ->
