@@ -56,7 +56,7 @@ find = (db, coll, query, res, limit, skip) ->
     cursor.limit limit if limit?
     # memory inefficient version for testing
     cursor.toArray (err, docs) ->
-      res.json 200, docs.map (e, i, arr) -> '/' + coll + '/' +  e._id.toHexString()
+      res.json 200, docs.map (e, i, arr) -> {href: '/' + coll + '/' +  e._id.toHexString()}
     db.close()
 
 # controllers
@@ -65,7 +65,7 @@ find = (db, coll, query, res, limit, skip) ->
 
 collections = api strict (req, res, next, db) ->
   db.collectionNames (err, names) ->
-    res.json 200, names.filter((e) -> return e.name.split('.')[1] != 'system').map (e, i, arr) -> '/' + e.name.split('.')[1]
+    res.json 200, names.filter((e) -> return e.name.split('.')[1] != 'system').map (e, i, arr) -> {href: '/' + e.name.split('.')[1]}
     db.close()
 
 collection = api strict (req, res, next, db) ->
