@@ -1,6 +1,6 @@
 {
   "name": "rest-now",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Geoffrey Parker <grp@gparker.co>",
   "description": "Start it running, dump some HTML/Bootstrap in the public dir, and you've got a webapp.",
   "preferGlobal": true,
