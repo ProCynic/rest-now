@@ -103,7 +103,7 @@ create = api nostrict (req, res, next, db) ->
       db.close()
       return res.send err
     c.insert req.body, {safe:true}, (err, result) ->
-      res.json 201, result
+      res.json 201, if result.length is 1 then result[0] else result
       db.close()
 
 #PUT
